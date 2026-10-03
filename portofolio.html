@@ -1,0 +1,541 @@
+<!doctype html>
+<html lang="id">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Portofolio - EDIT. IN</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Material+Symbols+Outlined"
+        rel="stylesheet"
+    >
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="assets/tw.js"></script>
+
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+
+<body class="text-[13px]">
+
+    <main id="app"></main>
+
+    <script src="assets/app.js"></script>
+
+    <script>
+        const PF = [
+            [
+                'Desain Grafis',
+                'Proyek Komersial Selesai',
+                'Kemasan Kopi Drip Bag & Brand Identity',
+                'Yayasan Vokasi Nusantara / Artisan Roastery',
+                '5.0',
+                'Arya Damar Wicaksono',
+                'Lead Designer',
+                ['Packaging', 'CMYK Print-Ready', 'Adobe Illustrator'],
+                'Portofolio1.jpg'
+            ],
+
+            [
+                'Desain Maskot',
+                'Terpilih Klien',
+                'KuroBot Cafe Mascot & Character Sheet',
+                'KuroBot Cafe',
+                '4.9',
+                'Rafi Athallah',
+                'Designer Karakter',
+                ['Vektor 3 Pose', 'IP Mascot', 'Clip Studio Paint'],
+                'Portofolio2.jpg'
+            ],
+
+            [
+                '3D Modeling',
+                'Proyek Unggulan',
+                'Visual Kemasan Botol Kosmetik Luxury 3D',
+                'Botanica Herbal Beauty',
+                '5.0',
+                'Rian Maulana',
+                '3D Visualizer',
+                ['PBR 4K', 'Blender Cycles 360°', 'Commercial License'],
+                'Portofolio3.jpg'
+            ],
+
+            [
+                'Editing Video & Foto',
+                'Tren Medsos',
+                'Video Iklan Reels Bakery Artisanal 30s',
+                'Artisan Bread Co.',
+                '4.8',
+                'Dimas Arya',
+                'Video Editor',
+                ['Vertical 9:16', 'Motion Graphics', 'Premiere Pro'],
+                'Portofolio4.jpg'
+            ],
+
+            [
+                '3D Modeling',
+                'Game Asset',
+                '3D Robot Prop Game-Ready Asset',
+                'Studio Game Nusantara',
+                '4.9',
+                'Fajar Pratama',
+                '3D Modeler',
+                ['14.5k Tris', 'Low-Poly Unity', 'Substance Painter'],
+                'Portofolio5.jpg'
+            ],
+
+            [
+                'Desain Grafis',
+                'UMKM Mandiri',
+                'Label Sambal Botol Nusantara & Box Packaging',
+                'UMKM Dapur Nusantara',
+                '4.9',
+                'Fikri Ramadhan',
+                'Graphic Designer',
+                ['Label Print', '3D Mockup', 'Barcode & Nutrition'],
+                'Portofolio6.jpg'
+            ],
+
+            [
+                'Desain Maskot',
+                'Populer',
+                'Chibi Cat Barista - 3 Poses & Expression Guide',
+                'Kopi Senja',
+                '5.0',
+                'Alya Anindita',
+                'Illustrator',
+                ['Sticker WhatsApp', 'Merchandise Ready', 'Vector AI + SVG'],
+                'Portofolio7.jpg'
+            ],
+
+            [
+                'Editing Video & Foto',
+                'Digital Ad',
+                'Motion Graphic Promo Diskon Belajar App',
+                'TemanBelajar Edutech',
+                '4.9',
+                'Reza Maulana',
+                'Motion Designer',
+                ['Dynamic Subtitle', 'After Effects', 'Lottie Ready'],
+                'Portofolio8.jpg'
+            ],
+
+            [
+                'Editing Video & Foto',
+                'Proyek Klien',
+                'Katalog Produk Kopi Specialty & Tone Grading',
+                'Kopi Senja Roastery',
+                '5.0',
+                'Zahra Putri',
+                'Visual Retoucher',
+                ['Studio Lighting', 'High-End Retouch', 'Capture One Pro'],
+                'Portofolio9.jpg'
+            ]
+        ];
+
+        let cat = 'Semua Karya';
+
+        function draw() {
+            const q = ($('q')?.value || '').toLowerCase();
+
+            const L = PF.filter(
+                p =>
+                    (cat === 'Semua Karya' || p[0] === cat) &&
+                    (p[2] + p[3]).toLowerCase().includes(q)
+            );
+
+            $('grid').innerHTML =
+                L.map(p => `
+                    <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
+
+                        <!-- FOTO PORTOFOLIO -->
+                        <div
+                            class="relative h-44 overflow-hidden p-3 flex justify-between
+                            text-[10px] font-bold bg-indigo-50"
+                        >
+                            <img
+                                src="images/${p[8]}"
+                                alt="${p[2]}"
+                                class="absolute inset-0 w-full h-full object-cover"
+                                onerror="this.onerror=null; this.style.display='none'; this.parentElement.classList.add('bg-gradient-to-br','from-indigo-50','to-slate-200')"
+                            >
+                            <div class="relative z-10 flex justify-between w-full">
+
+
+                            <span
+                                class="bg-white/90 text-brand rounded-md px-2 py-1 h-fit"
+                            >
+                                ${p[0]}
+                            </span>
+
+                            <span
+                                class="bg-wa text-white rounded-md px-2 py-1 h-fit"
+                            >
+                                ${p[1]}
+                            </span>
+                            </div>
+
+                        </div>
+
+                        <!-- INFORMASI PORTOFOLIO -->
+                        <div class="p-4">
+
+                            <div
+                                class="flex justify-between text-[11px] text-slate-500"
+                            >
+                                <span>
+                                    Klien: ${p[3]}
+                                </span>
+
+                                <b class="text-amber-500">
+                                    ★ ${p[4]}
+                                </b>
+                            </div>
+
+                            <b
+                                class="text-[15px] block mt-1 leading-snug"
+                            >
+                                ${p[2]}
+                            </b>
+
+                            <div
+                                class="bg-indigo-50/60 rounded-lg p-2 mt-3 text-[11px]"
+                            >
+                                <b>${p[5]}</b>
+                                (${p[6]})
+
+                                <br>
+
+                                <span class="text-emerald-700">
+                                    Supervisor / Admin
+                                </span>
+                            </div>
+
+                            <div class="flex flex-wrap gap-1.5 mt-3">
+                                ${p[7].map(t => pill(t)).join('')}
+                            </div>
+
+                            <div
+                                class="grid grid-cols-2 gap-2 mt-4
+                                text-[11px] font-bold"
+                            >
+
+                                <button
+                                    onclick="kasus(${PF.indexOf(p)})"
+                                    class="bg-indigo-50 rounded-lg py-2.5"
+                                >
+                                    Lihat Studi Kasus ↗
+                                </button>
+
+                                <a
+                                    href="layanan.html?s=${SL[p[0]]}"
+                                    class="bg-brand text-white rounded-lg py-2.5 text-center"
+                                >
+                                    Pesan Serupa
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                `).join('') ||
+
+                `
+                    <p class="col-span-3 text-center text-slate-500 py-10">
+                        Karya tidak ditemukan.
+                    </p>
+                `;
+        }
+
+        function kasus(i) {
+            const p = PF[i];
+
+            modal(
+                p[2],
+                `
+                    <div class="bg-indigo-50/60 rounded-xl p-3">
+
+                        <b>Klien:</b> ${p[3]}
+
+                        <br>
+
+                        <b>Kategori:</b>
+                        ${p[0]} • ★ ${p[4]}
+
+                        <br>
+
+                        <b>Designer:</b>
+                        ${p[5]} (${p[6]})
+
+                    </div>
+
+                    <p class="leading-relaxed">
+                        Studi kasus proyek ${p[0].toLowerCase()}
+                        untuk ${p[3]}: dikerjakan dengan alur brief,
+                        konsep, produksi, revisi, lalu serah terima
+                        master file, dengan supervisi Admin / Supervisor studio.
+                    </p>
+
+                    <div class="flex flex-wrap gap-1.5">
+                        ${p[7].map(t => pill(t)).join('')}
+                    </div>
+
+                    <a
+                        href="layanan.html?s=${SL[p[0]]}"
+                        class="font-bold text-brand"
+                    >
+                        Pesan karya serupa →
+                    </a>
+                `
+            );
+        }
+
+        function setCat(c) {
+            cat = c;
+
+            document.querySelectorAll('.tab').forEach(b => {
+                b.className =
+                    'tab rounded-lg px-4 py-2 ' +
+                    (
+                        b.dataset.c === c
+                            ? 'bg-brand text-white'
+                            : 'text-slate-700'
+                    );
+            });
+
+            draw();
+        }
+
+        $('app').innerHTML = `
+
+            <div class="max-w-5xl mx-auto px-4">
+
+                <!-- HERO -->
+                <section class="text-center pt-12">
+
+                    <span
+                        class="inline-block bg-indigo-50 text-brand text-[10px]
+                        font-bold rounded-full px-3 py-1"
+                    >
+                        ● PORTOFOLIO PROYEK KREATIF
+                    </span>
+
+                    <h1 class="text-4xl font-extrabold mt-4">
+                        Eksplorasi Portofolio Kreatif DKV
+                    </h1>
+
+                    <p class="text-slate-500 mt-3 max-w-md mx-auto">
+                        Kumpulan portofolio komersial dan proyek kreatif
+                        berkualitas dari tim Designer & Staff DKV berpengalaman.
+                    </p>
+
+                    <div
+                        class="inline-flex gap-5 bg-white shadow-sm rounded-full
+                        px-6 py-2.5 mt-5 text-[11px] font-semibold"
+                    >
+
+                        <span>
+                            ● 9+ Proyek Pilihan
+                        </span>
+
+                        <span>
+                            <b class="text-amber-500">
+                                ★ 4.9/5.0
+                            </b>
+                            Kepuasan Klien
+                        </span>
+
+                        <span>
+                            Lisensi Komersial Resmi
+                        </span>
+
+                    </div>
+
+                </section>
+
+                <!-- FILTER -->
+                <div
+                    class="bg-indigo-50/60 rounded-2xl p-3 mt-8
+                    flex gap-2 items-center text-xs font-bold"
+                >
+
+                    ${
+                        [
+                            'Semua Karya',
+                            'Desain Grafis',
+                            '3D Modeling',
+                            'Desain Maskot',
+                            'Editing Video & Foto'
+                        ]
+                            .map(
+                                c => `
+                                    <button
+                                        data-c="${c}"
+                                        onclick="setCat('${c}')"
+                                        class="tab rounded-lg px-4 py-2
+                                        ${
+                                            c === cat
+                                                ? 'bg-brand text-white'
+                                                : 'text-slate-700'
+                                        }"
+                                    >
+                                        ${c}
+                                    </button>
+                                `
+                            )
+                            .join('')
+                    }
+
+                    <input
+                        id="q"
+                        oninput="draw()"
+                        placeholder="Cari karya atau brand..."
+                        class="ml-auto bg-white rounded-lg px-3 py-2
+                        font-normal w-48"
+                    >
+
+                </div>
+
+                <!-- GRID PORTOFOLIO -->
+                <div
+                    id="grid"
+                    class="grid grid-cols-3 gap-5 mt-5"
+                ></div>
+
+                <!-- ALUR KERJA -->
+                <section class="text-center mt-14">
+
+                    <span
+                        class="inline-block bg-indigo-50 text-brand text-[10px]
+                        font-bold rounded-full px-3 py-1"
+                    >
+                        ALUR KERJA PROFESIONAL
+                    </span>
+
+                    <h2 class="text-xl font-extrabold mt-2">
+                        Alur Kerja Kolaborasi Transparan
+                    </h2>
+
+                    <div
+                        class="grid grid-cols-4 gap-4 mt-6 text-left"
+                    >
+
+                        ${
+                            [
+                                [
+                                    'Pilih Portofolio & Referensi',
+                                    'Pilih karya favorit sebagai acuan gaya visual dan format output.'
+                                ],
+                                [
+                                    'Kirim Form Brief WhatsApp',
+                                    'Diskusikan brief, timeline, dan transaksi resmi via WhatsApp Admin.'
+                                ],
+                                [
+                                    'Pengerjaan Terstruktur & Quality Control',
+                                    'Designer mengeksekusi karya dengan supervisi standar studio.'
+                                ],
+                                [
+                                    'Serah Terima & Lisensi',
+                                    'Pelunasan diverifikasi manual, serah terima master file & lisensi komersial.'
+                                ]
+                            ]
+                                .map(
+                                    (a, i) => `
+                                        <div
+                                            class="bg-white rounded-2xl shadow-sm p-5"
+                                        >
+
+                                            <b
+                                                class="text-2xl float-right
+                                                ${
+                                                    i % 2
+                                                        ? 'text-emerald-300'
+                                                        : 'text-indigo-200'
+                                                }"
+                                            >
+                                                0${i + 1}
+                                            </b>
+
+                                            <b
+                                                class="text-[13px] block mt-8"
+                                            >
+                                                ${a[0]}
+                                            </b>
+
+                                            <p
+                                                class="text-[11px] text-slate-500 mt-1"
+                                            >
+                                                ${a[1]}
+                                            </p>
+
+                                        </div>
+                                    `
+                                )
+                                .join('')
+                        }
+
+                    </div>
+
+                </section>
+
+                <!-- CTA -->
+                <section
+                    class="mt-10 rounded-3xl bg-gradient-to-br
+                    from-brand to-slate-800 text-white p-10"
+                >
+
+                    <span
+                        class="text-[10px] font-bold text-emerald-300"
+                    >
+                        EDIT. IN Terverifikasi
+                    </span>
+
+                    <h2
+                        class="text-4xl font-extrabold leading-tight mt-3 max-w-md"
+                    >
+                        Tertarik Mewujudkan Proyek Kreatif Bersama Kami?
+                    </h2>
+
+                    <p
+                        class="text-xs text-indigo-100 mt-3 max-w-md"
+                    >
+                        Dapatkan hasil visual berkualitas dengan tarif kompetitif,
+                        proses transparan, dan garansi revisi terpadu.
+                    </p>
+
+                    <div
+                        class="flex gap-3 mt-6 text-xs font-bold"
+                    >
+
+                        <a
+                            href="layanan.html#brief"
+                            class="bg-white text-brand rounded-xl px-5 py-3"
+                        >
+                            Kirim Brief Proyek Baru
+                        </a>
+
+                        <a
+                            href="javascript:wa('Halo EDIT. IN, saya tertarik proyek kreatif')"
+                            class="bg-wa rounded-xl px-5 py-3"
+                        >
+                            Konsultasi via WhatsApp
+                        </a>
+
+                    </div>
+
+                </section>
+
+            </div>
+        `;
+
+        chead('Portofolio');
+        cfoot();
+        setCat('Semua Karya');
+    </script>
+
+</body>
+
+</html>

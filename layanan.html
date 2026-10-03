@@ -1,0 +1,604 @@
+<!doctype html>
+<html lang="id">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <title>Layanan - KreatifDKV Studio</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Material+Symbols+Outlined"
+        rel="stylesheet"
+    >
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="assets/tw.js"></script>
+
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+
+<body class="text-[13px]">
+
+    <main id="app"></main>
+
+    <script src="assets/app.js"></script>
+
+    <script>
+
+        /* =========================================================
+           NOMOR WHATSAPP (GANTI DI SINI SAJA)
+           Format: awalan 62, tanpa 0, tanpa spasi / tanda "-"
+           Contoh: 0857-1234-5678  ->  '6285712345678'
+        ========================================================= */
+        const WA_ADMIN = '6285210447235'; // Nomor WhatsApp Admin / Studio KreatifDKV  
+
+        const chatWA = pesan =>
+            open(
+                'https://wa.me/6285210447235' +
+                '?text=' + encodeURIComponent(pesan)
+            );
+
+
+        /* =========================================================
+           DATA LAYANAN
+        ========================================================= */
+        const S = {
+
+            grafis: {
+                n: 'Desain Grafis & Branding',
+                ic: 'brush',
+                h: 'Jasa Desain Grafis, Branding & Identitas Visual',
+                d: 'Bangun citra brand dan kemasan produk UMKM profesional bersama talenta desainer berbakat DKV yang didampingi intensif oleh Admin / Supervisor profesional bersertifikasi.',
+                p: '150.000',
+                t: '3 – 5 Hari Kerja',
+                rv: 'Hingga 2× Minor',
+                out: 'Master AI, EPS, SVG, PDF',
+
+                get: [
+                    ['Konsep Desain & Moodboard', 'Eksplorasi 2–3 alternatif arah visual, color palette, serta perpaduan typography scale yang presisi.'],
+                    ['Master File Siap Cetak', 'File vector CMYK 300 DPI, format Adobe Illustrator (AI), EPS, SVG, dan PDF Print-Ready standar percetakan.'],
+                    ['Mockup Visual Realistis', 'Pratinjau kemasan pouch, botol, dus, atau materi promosi dalam situasi nyata format 3D resolusi tinggi.'],
+                    ['Brand Color & Typography Guide', 'Lembar panduan resmi kode HEX, CMYK, rekomendasi Pantone, dan sumber lisensi font komersial.']
+                ],
+
+                port: [
+                    ['Kemasan Pouch', 'Aurora Coffee Drip Bag', 'Kala Coffee', 'Arya Damar'],
+                    ['Identitas Brand', 'Botanica Herbal Tea', 'Botanica Tea', 'Zahra Putri'],
+                    ['Label Botol', 'Sambal Botol Nusantara', 'Sambal Ibu', 'Fikri Ramadhan']
+                ],
+
+                alur: [
+                    ['Brief & Analisis', 'Memahami profil bisnis, target konsumen, tone visual, serta format media yang dibutuhkan.'],
+                    ['Moodboard & Konsep', 'Eksplorasi sketsa awal, perpaduan warna primer/aksen, dan kurasi tipografi utama.'],
+                    ['Digitalisasi Layout', 'Pengerjaan master vector presisi tinggi dengan kontrol supervisi guru/desainer senior.'],
+                    ['Finishing & Serah Terima', 'Presentasi mockup 3D, revisi minor, serta penyerahan master file siap cetak.']
+                ],
+
+                paket: [
+                    [
+                        'PAKET DASAR', 'Paket UMKM Starter', '150.000',
+                        'Ideal untuk logo simpel, label botol atau stiker pouch satu sisi yang siap cetak cepat.',
+                        ['1 Konsep Desain Utama', 'Master File Vector (PDF & AI)', '1× Mockup Pratinjau', '1× Revisi Minor', 'Estimasi 2–3 Hari Kerja']
+                    ],
+                    [
+                        'REKOMENDASI UTAMA', 'Bisnis Pro', '350.000',
+                        'Cocok untuk branding kemasan, varian warna label, serta presentasi promosi komersial.',
+                        ['2 Alternatif Konsep Desain', 'Master File Lengkap (AI, EPS, SVG, PDF)', '3 Mockup 3D Visual Realistis', '2× Revisi Minor', 'Estimasi 3–5 Hari Kerja']
+                    ],
+                    [
+                        'LENGKAP & KOMPREHENSIF', 'Premium Brand Kit', '750.000',
+                        'Solusi menyeluruh identitas brand, panduan warna/font resmi, dan adaptasi berbagai varian produk.',
+                        ['3 Alternatif Konsep Komplit', 'Master Vector + Brand Guidelines PDF', '5 Mockup Kemasan Multi-Sudut', 'Garansi 3× Revisi Terbimbing', 'Estimasi 5–7 Hari Kerja']
+                    ]
+                ]
+            },
+
+
+            '3d': {
+                n: '3D Modeling & Asset Visual',
+                ic: 'view_in_ar',
+                h: 'Jasa 3D Modeling, Rendering Produk & Asset Visual',
+                d: 'Model 3D realistis untuk produk, prop game, dan visual booth modular, dikerjakan talenta DKV dengan supervisi Admin / Supervisor.',
+                p: '450.000',
+                t: '4 – 6 Hari Kerja',
+                rv: 'Hingga 2× Minor',
+                out: 'GLB/GLTF, Render 4K PNG',
+
+                get: [
+                    ['Model 3D Presisi', 'Modeling low/high-poly bersih dengan topologi rapi.'],
+                    ['Material & Tekstur PBR', 'Tekstur fisik realistis siap dipakai di engine.'],
+                    ['Render 4K & Turntable', 'Render resolusi tinggi dan preview 360°.'],
+                    ['File Siap Pakai', 'Export GLB/GLTF, FBX, dan file .blend.']
+                ],
+
+                port: [
+                    ['3D Asset', '3D E-Scooter Prop Game', 'Studio Game Nusantara', 'Fajar Pratama'],
+                    ['Kemasan 3D', 'Visual Kemasan Botol Kosmetik', 'Botanica Herbal Beauty', 'Rian Maulana'],
+                    ['Robot Prop', 'Robot Prop Game-Ready', 'Studio Game Nusantara', 'Fajar Pratama']
+                ],
+
+                alur: [
+                    ['Brief & Referensi', 'Kumpulkan referensi, dimensi, dan kebutuhan output.'],
+                    ['Blockout & Modeling', 'Bentuk dasar lalu detail model.'],
+                    ['Texturing & Rendering', 'Material PBR dan render preview.'],
+                    ['Finalisasi & Serah Terima', 'Export file final dan penyerahan.']
+                ],
+
+                paket: [
+                    [
+                        'PAKET DASAR', 'Prop Sederhana', '450.000',
+                        'Satu objek 3D dengan material dasar.',
+                        ['1 Model 3D', 'Material PBR dasar', '1 Render 4K', '1× Revisi Minor', 'Estimasi 4–5 Hari Kerja']
+                    ],
+                    [
+                        'REKOMENDASI UTAMA', 'Produk Realistis', '600.000',
+                        'Render produk fotorealistik.',
+                        ['1 Model detail', 'Material PBR lengkap', '3 Sudut Render 4K', '2× Revisi Minor', 'Estimasi 4–6 Hari Kerja']
+                    ],
+                    [
+                        'LENGKAP & KOMPREHENSIF', 'Scene Visual', '750.000',
+                        'Scene visual atau booth modular.',
+                        ['Scene lengkap', 'Lighting studio', 'Turntable 360°', '3× Revisi Terbimbing', 'Estimasi 6–7 Hari Kerja']
+                    ]
+                ]
+            },
+
+
+            maskot: {
+                n: 'Desain Maskot & Karakter',
+                ic: 'mood',
+                h: 'Jasa Desain Maskot & Karakter Brand',
+                d: 'Karakter IP orisinal, ilustrasi maskot jenama, dan ragam variasi pose ekspresif untuk brand Anda.',
+                p: '350.000',
+                t: '3 – 5 Hari Kerja',
+                rv: 'Hingga 2× Minor',
+                out: 'AI, EPS, PNG Transparan',
+
+                get: [
+                    ['Konsep Karakter', 'Eksplorasi bentuk dan kepribadian maskot.'],
+                    ['Character Sheet', 'Tampak depan, samping, dan belakang.'],
+                    ['Variasi Pose & Ekspresi', 'Pose dan ekspresi siap pakai.'],
+                    ['Aset Siap Pakai', 'PNG transparan dan vector master.']
+                ],
+
+                port: [
+                    ['Desain Maskot', 'KuroBot Cafe Mascot', 'KuroBot Cafe', 'Muhammad Rino Mardiansyah'],
+                    ['Karakter Maskot', 'Maskot "Bubo Pintar" Edukasi', 'KreatifDKV Studio', 'Alya Anindita'],
+                    ['Sticker', 'Chibi Cat Barista', 'Kopi Senja', 'Alya Anindita']
+                ],
+
+                alur: [
+                    ['Brief & Referensi', 'Tentukan karakter, gaya, dan kebutuhan pose.'],
+                    ['Sketsa Konsep', 'Sketsa awal untuk dipilih klien.'],
+                    ['Digitalisasi Vector', 'Line art dan warna final.'],
+                    ['Serah Terima', 'Paket file master dan lisensi.']
+                ],
+
+                paket: [
+                    [
+                        'PAKET DASAR', 'Maskot Basic', '350.000',
+                        'Satu karakter dengan satu pose.',
+                        ['1 Karakter', '1 Pose', 'PNG & Vector', '1× Revisi Minor', 'Estimasi 3 Hari Kerja']
+                    ],
+                    [
+                        'REKOMENDASI UTAMA', 'Maskot 3 Pose', '450.000',
+                        'Karakter dengan tiga pose ekspresif.',
+                        ['1 Karakter', '3 Pose', 'Character Sheet', '2× Revisi Minor', 'Estimasi 3–5 Hari Kerja']
+                    ],
+                    [
+                        'LENGKAP & KOMPREHENSIF', 'Brand & IP', '500.000',
+                        'Maskot lengkap dengan panduan penggunaan.',
+                        ['1 Karakter', '5 Pose & Ekspresi', 'Panduan Penggunaan', '3× Revisi Terbimbing', 'Estimasi 5 Hari Kerja']
+                    ]
+                ]
+            },
+
+
+            video: {
+                n: 'Editing Video & Foto',
+                ic: 'movie',
+                h: 'Jasa Editing Video, Motion & Retouch Foto',
+                d: 'Editing video pendek TikTok/Reels, animasi bumper logo, dan retouch foto produk oleh tim DKV.',
+                p: '200.000',
+                t: '1 – 2 Hari Kerja',
+                rv: 'Hingga 2× Minor',
+                out: 'MP4 1080p, Subtitle SRT',
+
+                get: [
+                    ['Editing Video Dinamis', 'Hook tinggi, transisi modern, dan ritme cepat.'],
+                    ['Caption & Subtitle', 'Caption animasi dan file SRT terpisah.'],
+                    ['Color Grading', 'Tone warna konsisten dengan brand.'],
+                    ['Retouch Foto Produk', 'Pembersihan dan tone grading foto produk.']
+                ],
+
+                port: [
+                    ['Video Reels', 'Video Iklan Reels Bakery 30s', 'Artisan Bread Co.', 'Dimas Arya'],
+                    ['Motion Graphic', 'Promo Diskon Belajar App', 'TemanBelajar Edutech', 'Reza Maulana'],
+                    ['Retouch Foto', 'Katalog Produk Kopi Specialty', 'Kopi Senja Roastery', 'Zahra Putri']
+                ],
+
+                alur: [
+                    ['Brief & Footage', 'Kirim footage dan referensi gaya.'],
+                    ['Rough Cut', 'Potongan awal untuk ditinjau.'],
+                    ['Polishing', 'Grading, caption, dan audio.'],
+                    ['Serah Terima', 'Export final dan penyerahan.']
+                ],
+
+                paket: [
+                    [
+                        'PAKET DASAR', 'Reels Basic', '200.000',
+                        'Satu video pendek hingga 30 detik.',
+                        ['1 Video ≤ 30 detik', 'Caption otomatis', 'MP4 1080p', '1× Revisi Minor', 'Estimasi 1 Hari Kerja']
+                    ],
+                    [
+                        'REKOMENDASI UTAMA', 'Reels Pro', '350.000',
+                        'Video promosi dengan motion graphics.',
+                        ['1 Video ≤ 60 detik', 'Motion Graphics', 'Subtitle SRT', '2× Revisi Minor', 'Estimasi 1–2 Hari Kerja']
+                    ],
+                    [
+                        'LENGKAP & KOMPREHENSIF', 'Paket Konten 5×', '850.000',
+                        'Lima konten video dalam satu paket.',
+                        ['5 Video pendek', 'Color Grading', 'Subtitle SRT', '3× Revisi Terbimbing', 'Estimasi 5 Hari Kerja']
+                    ]
+                ]
+            }
+        };
+
+
+        const k = new URLSearchParams(location.search).get('s') || 'grafis',
+              s = S[k] || S.grafis;
+
+
+        /* =========================================================
+           TAMPILAN HALAMAN
+        ========================================================= */
+        $('app').innerHTML = `
+
+            <div class="max-w-5xl mx-auto px-4 pt-6">
+
+                <p class="text-[11px] text-slate-500">
+                    Beranda › Layanan Jasa › <b class="text-ink">${s.n}</b>
+                </p>
+
+                <div class="flex gap-2 mt-4 text-xs font-semibold">
+                    ${Object.entries(S).map(([a, b]) => `
+                        <a
+                            href="layanan.html?s=${a}"
+                            class="rounded-full px-4 py-2 ${a == k ? 'bg-brand text-white' : 'bg-white shadow-sm'}"
+                        >
+                            ${b.n}
+                        </a>
+                    `).join('')}
+                </div>
+
+
+                <!-- HERO LAYANAN -->
+                <section class="bg-white rounded-2xl shadow-sm p-8 mt-5 grid grid-cols-2 gap-8 items-center">
+
+                    <div>
+                        ${pill('Layanan Terfavorit')}
+                        ${pill('Standar Industri DKV')}
+
+                        <h1 class="text-3xl font-extrabold leading-tight mt-4">
+                            ${s.h}
+                        </h1>
+
+                        <p class="text-slate-600 mt-4 leading-relaxed">
+                            ${s.d}
+                        </p>
+
+                        <a
+                            href="#brief"
+                            class="inline-block mt-5 bg-brand text-white font-bold rounded-xl px-5 py-3"
+                        >
+                            Mulai Isi Brief Desain
+                        </a>
+
+                        <br>
+
+                        <a
+                            href="#"
+                            onclick="chatWA('Halo KreatifDKV, saya ingin konsultasi');return false"
+                            class="inline-block mt-3 bg-wa text-white font-bold rounded-xl px-5 py-3"
+                        >
+                            Konsultasi Gratis via WhatsApp
+                        </a>
+                    </div>
+
+                    <div class="h-64 rounded-2xl bg-gradient-to-br from-amber-100 to-stone-300 grid place-items-center text-brand">
+                        <i class="m" style="font-size:72px">${s.ic}</i>
+                    </div>
+
+                </section>
+
+
+                <!-- RINGKASAN -->
+                <div class="grid grid-cols-4 gap-4 mt-5">
+                    ${[
+                        ['Biaya Mulai Dari', 'Rp ' + s.p],
+                        ['Estimasi Pengerjaan', s.t],
+                        ['Garansi Revisi', s.rv],
+                        ['Lisensi & Supervisi', '100% Hak Komersial']
+                    ].map(x => `
+                        <div class="bg-white rounded-2xl shadow-sm p-4">
+                            <div class="text-[10px] text-slate-500">${x[0]}</div>
+                            <b class="text-sm">${x[1]}</b>
+                        </div>
+                    `).join('')}
+                </div>
+
+
+                <!-- YANG DIDAPATKAN -->
+                <h2 class="text-xl font-extrabold mt-10">
+                    Apa Saja yang Anda Dapatkan?
+                </h2>
+
+                <div class="grid grid-cols-4 gap-4 mt-3">
+                    ${s.get.map(g => `
+                        <div class="bg-white rounded-2xl shadow-sm p-5">
+                            <b>${g[0]}</b>
+                            <p class="text-[11px] text-slate-500 mt-2 leading-relaxed">${g[1]}</p>
+                        </div>
+                    `).join('')}
+                </div>
+
+
+                <!-- PORTOFOLIO -->
+                <h2 class="text-xl font-extrabold mt-10">
+                    Portfolio / Hasil Karya
+                </h2>
+
+                <div class="grid grid-cols-3 gap-4 mt-3">
+                    ${s.port.map(g => `
+                        <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
+
+                            <div class="h-36 bg-gradient-to-br from-indigo-100 to-stone-200 p-2 text-[10px] font-bold">
+                                <span class="bg-white rounded px-2 py-0.5">${g[0]}</span>
+                            </div>
+
+                            <div class="p-4 flex justify-between text-[11px]">
+                                <span>
+                                    <b class="text-sm">${g[1]}</b>
+                                    <br>
+                                    ${g[3]} • Designer / Staff DKV
+                                </span>
+
+                                <span>Client: ${g[2]}</span>
+                            </div>
+
+                        </div>
+                    `).join('')}
+                </div>
+
+
+                <!-- ALUR KERJA -->
+                <section class="bg-white rounded-2xl shadow-sm p-6 mt-8">
+
+                    <h2 class="text-xl font-extrabold">Alur Kerja Pengerjaan</h2>
+
+                    <div class="grid grid-cols-4 gap-4 mt-4">
+                        ${s.alur.map((a, i) => `
+                            <div class="bg-indigo-50/60 rounded-xl p-4">
+
+                                <b class="w-6 h-6 rounded-full text-white text-[10px] grid place-items-center ${i == 3 ? 'bg-emerald-800' : 'bg-brand'}">
+                                    ${i + 1}
+                                </b>
+
+                                <b class="block mt-3">${a[0]}</b>
+
+                                <p class="text-[11px] text-slate-600 mt-1">${a[1]}</p>
+
+                            </div>
+                        `).join('')}
+                    </div>
+
+                </section>
+
+
+                <!-- PAKET -->
+                <h2 class="text-xl font-extrabold mt-10">
+                    Pilihan Paket Layanan
+                </h2>
+
+                <div class="grid grid-cols-3 gap-5 mt-4">
+                    ${s.paket.map((p, i) => `
+                        <div class="bg-white rounded-2xl p-5 ${i == 1 ? 'border-2 border-brand' : 'shadow-sm'}">
+
+                            <div class="text-[10px] font-bold ${i == 1 ? 'text-brand' : 'text-slate-500'}">
+                                ${p[0]}
+                            </div>
+
+                            <b class="text-base block mt-1">${p[1]}</b>
+
+                            <div class="text-2xl font-extrabold text-brand mt-2">
+                                Rp ${p[2]}
+                                <span class="text-xs font-normal text-slate-500">/ project</span>
+                            </div>
+
+                            <p class="text-xs text-slate-600 mt-2">${p[3]}</p>
+
+                            <ul class="mt-3 space-y-1.5 text-xs border-t pt-3">
+                                ${p[4].map(x => `<li>✓ ${x}</li>`).join('')}
+                            </ul>
+
+                            <a
+                                href="#brief"
+                                onclick="$('f4').selectedIndex=${i}"
+                                class="block text-center font-bold rounded-lg py-2.5 mt-4 ${i == 1 ? 'bg-brand text-white' : 'bg-indigo-50'}"
+                            >
+                                Pilih ${p[1]}
+                            </a>
+
+                        </div>
+                    `).join('')}
+                </div>
+
+
+                <!-- FORM BRIEF -->
+                <section id="brief" class="bg-white rounded-2xl shadow-sm p-6 mt-8">
+
+                    <h2 class="text-xl font-extrabold">Form Request Brief Desain</h2>
+
+                    <p class="text-xs text-slate-500">
+                        Sampaikan detail kebutuhan proyek Anda. Format pesan rapi akan otomatis diteruskan ke WhatsApp Admin Studio.
+                    </p>
+
+                    <div class="grid grid-cols-2 gap-6 mt-4 text-xs font-bold">
+
+                        <div class="space-y-3">
+
+                            <label>
+                                Nama Lengkap / PIC *
+                                <input
+                                    id="f1"
+                                    class="block w-full mt-1 bg-indigo-50/60 rounded-lg p-3 font-normal"
+                                    placeholder="Contoh: Budi Santoso"
+                                >
+                            </label>
+
+                            <label>
+                                Nomor WhatsApp *
+                                <input
+                                    id="f2"
+                                    class="block w-full mt-1 bg-indigo-50/60 rounded-lg p-3 font-normal"
+                                    placeholder="0812xxxxxxx"
+                                >
+                            </label>
+
+                            <label>
+                                Nama Brand / Usaha *
+                                <input
+                                    id="f3"
+                                    class="block w-full mt-1 bg-indigo-50/60 rounded-lg p-3 font-normal"
+                                    placeholder="Contoh: Kopi Senja"
+                                >
+                            </label>
+
+                            <label>
+                                Pilihan Paket Layanan *
+                                <select
+                                    id="f4"
+                                    class="block w-full mt-1 bg-indigo-50/60 rounded-lg p-3 font-normal"
+                                >
+                                    ${s.paket.map(p => `<option>${p[1]} (Rp ${p[2]})</option>`).join('')}
+                                </select>
+                            </label>
+
+                        </div>
+
+                        <div class="space-y-3">
+
+                            <label>
+                                Deskripsi Kebutuhan & Catatan Khusus *
+                                <textarea
+                                    id="f5"
+                                    rows="6"
+                                    class="block w-full mt-1 bg-indigo-50/60 rounded-lg p-3 font-normal"
+                                    placeholder="Jelaskan gaya visual yang diinginkan..."
+                                ></textarea>
+                            </label>
+
+                            <button
+                                onclick="kirim()"
+                                class="w-full bg-wa text-white rounded-xl py-3"
+                            >
+                                Kirim Brief via WhatsApp
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- CTA BAWAH -->
+                <section class="bg-emerald-800 text-white rounded-2xl p-6 mt-8 flex justify-between items-center">
+
+                    <div>
+                        <b class="text-lg">
+                            Masih Ragu Menentukan Paket Desain yang Tepat?
+                        </b>
+
+                        <p class="text-xs text-emerald-100 mt-1">
+                            Konsultasikan ide usaha dan brief awal Anda langsung dengan Supervisor KreatifDKV secara cuma-cuma.
+                        </p>
+                    </div>
+
+                    <a
+                        href="#"
+                        onclick="chatWA('Halo KreatifDKV, saya ragu memilih paket');return false"
+                        class="bg-white text-ink font-bold rounded-xl px-5 py-3 text-xs"
+                    >
+                        Chat WhatsApp Sekarang
+                    </a>
+
+                </section>
+
+            </div>
+        `;
+
+
+        /* =========================================================
+           KIRIM BRIEF
+        ========================================================= */
+        const CM = {
+            grafis: 'Desain Grafis',
+            '3d': '3D Modeling',
+            maskot: 'Desain Maskot',
+            video: 'Editing Video & Foto'
+        };
+
+        function kirim() {
+
+            const v = i => $('f' + i).value.trim();
+
+            if (!v(1) || !v(2) || !v(3) || !v(5))
+                return toast('Lengkapi semua kolom bertanda *');
+
+            const id = nextId('REQ-2026-', DB.requests);
+
+            DB.requests.unshift({
+                id,
+                name: v(1) + ' (' + v(3) + ')',
+                wa: v(2),
+                svc: s.n + ' — ' + $('f4').value,
+                cat: CM[k] || 'Desain Grafis',
+                date: today(),
+                status: 'Baru',
+                brief: v(5),
+                email: '-',
+                rec: ''
+            });
+
+            addLog(
+                'Request baru ' + id + ' diterima dari ' + v(1) + '.',
+                'Via Form Brief Publik'
+            );
+
+            save();
+
+            toast('Brief terkirim! ID request: ' + id);
+
+            chatWA(
+                `Halo KreatifDKV, saya kirim brief ${s.n} (${id})\n` +
+                `Nama: ${v(1)}\n` +
+                `WA: ${v(2)}\n` +
+                `Brand: ${v(3)}\n` +
+                `Paket: ${$('f4').value}\n` +
+                `Kebutuhan: ${v(5)}`
+            );
+
+            ['f1', 'f2', 'f3', 'f5'].forEach(i => $(i).value = '');
+        }
+
+
+        chead('Layanan');
+        cfoot();
+
+    </script>
+
+</body>
+
+</html>

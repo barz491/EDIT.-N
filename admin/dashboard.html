@@ -1,0 +1,617 @@
+<!doctype html>
+<html lang="id">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <title>Dashboard Admin - EDIT. IN</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Material+Symbols+Outlined"
+        rel="stylesheet"
+    >
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../assets/tw.js"></script>
+
+    <link rel="stylesheet" href="../assets/style.css">
+</head>
+
+<body>
+
+    <script src="../assets/app.js"></script>
+
+    <script>
+
+        shell(
+            'Dashboard',
+            'Selamat Datang, Admin Studio! 👋',
+            'Ringkasan operasional bisnis jasa EDIT. IN, pesanan klien, dan pemantauan pengerjaan proyek desainer profesional hari ini.',
+            '● Studio Kreatif DKV Operasional',
+            btn(
+                'Cek Brief Masuk',
+                0,
+                "location='request.html'"
+            ) +
+            btn(
+                '+ Tambah Pesanan Manual',
+                1,
+                'orderForm()'
+            ),
+            '<div id="out"></div>'
+        );
+
+
+        function instruksi() {
+
+            const A = DB.orders.filter(
+                o => o.pay == 'Menunggu Pembayaran'
+            );
+
+            if (!A.length)
+                return toast('Semua order sudah punya pembayaran');
+
+            modal(
+                'Kirim Instruksi Pembayaran via WhatsApp',
+
+                fld(
+                    'i1',
+                    'Pilih Order',
+                    A[0].id + ' — ' + A[0].cust,
+                    A.map(
+                        o => o.id + ' — ' + o.cust
+                    )
+                ),
+
+                {
+                    ok: 'Buka WhatsApp',
+
+                    onOk() {
+
+                        const o = DB.orders.find(
+                            x => x.id == g('i1').split(' — ')[0]
+                        );
+
+                        wa(
+                            `Halo ${o.cust}, berikut instruksi pembayaran DP ${DB.set.dp}% untuk ${o.id} (${rp(o.amount * DB.set.dp / 100)}):
+` +
+                            DB.set.bank
+                                .map(
+                                    b => `${b.n}: ${b.no} a.n. ${b.an}`
+                                )
+                                .join('\n') +
+                            '\nMohon kirim bukti transfer ke chat ini.',
+                            o.wa
+                        );
+                    }
+                }
+            );
+        }
+
+
+        function lead() {
+
+            const d =
+                DB.designers.find(
+                    x => x.role.includes('Lead')
+                ) ||
+                DB.designers[0];
+
+            wa(
+                'Halo ' +
+                d.name +
+                ', mohon update progres order hari ini.',
+                d.wa
+            );
+        }
+
+
+        function R() {
+
+            const A = act().sort(
+                (a, b) =>
+                    a.deadline.localeCompare(b.deadline)
+            );
+
+            const Q = DB.requests.filter(
+                r =>
+                    r.status == 'Baru' ||
+                    r.status == 'Menunggu'
+            );
+
+            const paid = DB.payments
+                .filter(
+                    p =>
+                        [
+                            'DP Terverifikasi',
+                            'Lunas'
+                        ].includes(p.status)
+                )
+                .reduce(
+                    (s, p) => s + p.amount,
+                    0
+                );
+
+            const pc = p =>
+                DB.orders.filter(
+                    o => o.pay == p
+                ).length;
+
+
+            $('out').innerHTML =
+
+                stats([
+                    [
+                        'PERLU DITINJAU',
+                        Q.length,
+                        'Request masuk baru • belum ditugaskan',
+                        'move_to_inbox'
+                    ],
+                    [
+                        'SEDANG AKTIF',
+                        A.length,
+                        'Order dikerjakan',
+                        'palette'
+                    ],
+                    [
+                        'BULAN INI',
+                        rp(paid),
+                        'Pembayaran terverifikasi',
+                        'payments'
+                    ],
+                    [
+                        'STUDIO READY',
+                        DB.designers.length,
+                        'Designer aktif siap ambil order',
+                        'groups'
+                    ]
+                ])
+
+                +
+
+                `
+                <div class="grid grid-cols-[1fr_300px] gap-5">
+
+                    <div class="space-y-5 min-w-0">
+
+                        <section class="${card}">
+
+                            <div class="flex justify-between">
+
+                                <div>
+
+                                    <h2 class="font-bold text-base">
+                                        Request Masuk Perlu Validasi
+                                    </h2>
+
+                                    <p class="text-xs text-slate-500">
+                                        Tinjau brief request dan lanjutkan konfirmasi melalui WhatsApp
+                                    </p>
+
+                                </div>
+
+                                ${pill(
+                                    Q.length + ' Butuh Tindakan',
+                                    'bg-red-100 text-red-600'
+                                )}
+
+                            </div>
+
+
+                            <div class="mt-4 space-y-3">
+
+                                ${
+                                    Q.slice(0, 3)
+                                        .map(
+                                            (r, i) => `
+                                                <div class="border border-slate-100 bg-slate-50/60 rounded-xl p-4">
+
+                                                    <div class="flex gap-3">
+
+                                                        <b class="w-6 h-6 rounded-full bg-indigo-100 text-brand text-xs grid place-items-center">
+                                                            ${i + 1}
+                                                        </b>
+
+                                                        <div class="flex-1">
+
+                                                            <b>${r.name}</b>
+
+                                                            <code class="text-[10px] bg-indigo-100 text-brand rounded px-1.5 py-0.5">
+                                                                ${r.id}
+                                                            </code>
+
+                                                            ${pill(
+                                                                r.status == 'Baru'
+                                                                    ? 'Baru'
+                                                                    : 'Perlu Ditinjau',
+                                                                SC[r.status]
+                                                            )}
+
+                                                            <div class="text-xs mt-1">
+                                                                Kategori: ${r.svc}
+                                                            </div>
+
+                                                            <div class="text-[11px] text-slate-500 mt-1">
+                                                                ${I('event')}
+                                                                ${fd(r.date)}
+                                                                •
+                                                                ${r.brief.slice(0, 70)}
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+
+
+                                                    <div class="flex justify-end gap-2 mt-3 text-[11px] font-bold">
+
+                                                        <button
+                                                            onclick="brief('${r.id}')"
+                                                            class="bg-white border rounded-lg px-3 py-1.5"
+                                                        >
+                                                            Lihat Brief
+                                                        </button>
+
+
+                                                        <button
+                                                            onclick="wa('Halo ${r.name}, kami dari KreatifDKV terkait ${r.id}','${r.wa}')"
+                                                            class="bg-white border border-emerald-300 text-emerald-700 rounded-lg px-3 py-1.5"
+                                                        >
+                                                            Chat WA
+                                                        </button>
+
+
+                                                        <button
+                                                            onclick="terima('${r.id}')"
+                                                            class="bg-brand text-white rounded-lg px-3 py-1.5"
+                                                        >
+                                                            Terima & Buat Order
+                                                        </button>
+
+                                                    </div>
+
+                                                </div>
+                                            `
+                                        )
+                                        .join('')
+
+                                    ||
+                                    '<p class="text-slate-500 text-xs">Tidak ada request yang perlu divalidasi 🎉</p>'
+                                }
+
+                            </div>
+
+                        </section>
+
+
+                        <section class="${card}">
+
+                            <div class="flex justify-between">
+
+                                <div>
+
+                                    <h2 class="font-bold text-base">
+                                        Pesanan Aktif & Progress Proyek
+                                    </h2>
+
+                                    <p class="text-xs text-slate-500">
+                                        Progres riil pengerjaan proyek di studio
+                                    </p>
+
+                                </div>
+
+
+                                <a
+                                    href="pesanan.html"
+                                    class="text-xs font-bold text-brand"
+                                >
+                                    Lihat Semua (${A.length}) ›
+                                </a>
+
+                            </div>
+
+
+                            <div class="mt-4 space-y-3">
+
+                                ${A.slice(0, 3)
+                                    .map(
+                                        o => `
+                                            <div class="bg-indigo-50/60 rounded-xl p-4">
+
+                                                <div class="flex justify-between">
+
+                                                    <div>
+
+                                                        <code class="text-[10px] bg-indigo-100 text-brand rounded px-1.5">
+                                                            ${o.id}
+                                                        </code>
+
+                                                        <div class="font-bold mt-2">
+                                                            ${o.cust} • ${o.svc}
+                                                        </div>
+
+                                                    </div>
+
+                                                    ${pill(
+                                                        o.status,
+                                                        SC[o.status]
+                                                    )}
+
+                                                </div>
+
+
+                                                <div class="flex justify-between text-xs mt-2">
+
+                                                    <span>
+                                                        Desainer:
+                                                        <b>
+                                                            ${o.designer || 'Belum ditugaskan'}
+                                                        </b>
+                                                    </span>
+
+                                                    <b class="text-brand">
+                                                        ${o.progress}%
+                                                    </b>
+
+                                                </div>
+
+
+                                                <div class="h-2 bg-indigo-100 rounded-full mt-2">
+
+                                                    <div
+                                                        class="h-2 rounded-full bg-brand2"
+                                                        style="width:${o.progress}%"
+                                                    ></div>
+
+                                                </div>
+
+
+                                                <div class="flex justify-between text-[11px] mt-2">
+
+                                                    <span class="text-amber-700">
+                                                        Target: ${fd(o.deadline)}
+                                                    </span>
+
+                                                    <a
+                                                        href="../lacak.html?id=${o.id}"
+                                                        class="font-bold text-brand"
+                                                    >
+                                                        Lihat Lacak Pesanan
+                                                    </a>
+
+                                                </div>
+
+                                            </div>
+                                        `
+                                    )
+                                    .join('')}
+
+                            </div>
+
+                        </section>
+
+                    </div>
+
+
+                    <div class="space-y-5">
+
+                        <section class="${card}">
+
+                            <h2 class="font-bold text-base">
+                                Status Pembayaran
+                            </h2>
+
+
+                            <div class="space-y-2 text-xs font-semibold mt-3">
+
+                                <a
+                                    href="pembayaran.html"
+                                    class="flex justify-between bg-indigo-50 rounded-lg p-3"
+                                >
+                                    <span>
+                                        • DP Terverifikasi
+                                    </span>
+
+                                    <span>
+                                        ${pc('DP 50%')} Order
+                                    </span>
+                                </a>
+
+
+                                <a
+                                    href="pembayaran.html"
+                                    class="flex justify-between bg-amber-50 rounded-lg p-3"
+                                >
+                                    <span>
+                                        • Menunggu Pembayaran
+                                    </span>
+
+                                    <span class="text-amber-700">
+                                        ${pc('Menunggu Pembayaran')} Order
+                                    </span>
+                                </a>
+
+
+                                <a
+                                    href="pembayaran.html"
+                                    class="flex justify-between bg-emerald-50 rounded-lg p-3"
+                                >
+                                    <span>
+                                        • Lunas
+                                    </span>
+
+                                    <span class="text-emerald-700">
+                                        ${pc('Lunas')} Order
+                                    </span>
+                                </a>
+
+                            </div>
+
+                        </section>
+
+
+                        <section class="${card}">
+
+                            <h2 class="font-bold text-base">
+                                Deadline Terdekat
+                            </h2>
+
+
+                            <div class="mt-3 space-y-2">
+
+                                ${A.slice(0, 3)
+                                    .map(
+                                        (o, i) => `
+                                            <a
+                                                href="pesanan.html?q=${o.id}"
+                                                class="block border-l-4 ${
+                                                    [
+                                                        'border-amber-500',
+                                                        'border-brand',
+                                                        'border-emerald-600'
+                                                    ][i]
+                                                } bg-indigo-50/60 rounded-lg p-3"
+                                            >
+
+                                                <div class="flex justify-between text-[10px] font-bold">
+
+                                                    <span>
+                                                        ${fd(o.deadline)}
+                                                    </span>
+
+                                                    <span class="text-slate-500">
+                                                        ${o.id}
+                                                    </span>
+
+                                                </div>
+
+
+                                                <div class="font-bold mt-1">
+                                                    ${o.svc}
+                                                </div>
+
+
+                                                <div class="text-[11px] text-slate-500">
+                                                    Designer: ${o.designer || '-'}
+                                                </div>
+
+                                            </a>
+                                        `
+                                    )
+                                    .join('')}
+
+                            </div>
+
+                        </section>
+
+
+                        <section class="${card}">
+
+                            <h2 class="font-bold text-base">
+                                Aksi Cepat Admin
+                            </h2>
+
+
+                            <div class="space-y-2 mt-3">
+
+                                ${
+                                    [
+                                        [
+                                            'receipt_long',
+                                            'Kirim Instruksi Pembayaran via WhatsApp',
+                                            'instruksi()'
+                                        ],
+                                        [
+                                            'person_add',
+                                            'Tugaskan Designer ke Order',
+                                            'tugaskan()'
+                                        ],
+                                        [
+                                            'chat',
+                                            'Hubungi Lead Designer',
+                                            'lead()'
+                                        ],
+                                        [
+                                            'download',
+                                            'Unduh Rekap Bulanan (Excel)',
+                                            "csv('rekap-order',[['ID','Customer','Layanan','Designer','Pembayaran','Status','Progress','Deadline','Nilai'],...DB.orders.map(o=>[o.id,o.cust,o.svc,o.designer,o.pay,o.status,o.progress+'%',o.deadline,o.amount])])"
+                                        ]
+                                    ]
+                                    .map(
+                                        q => `
+                                            <button
+                                                onclick="${q[2]}"
+                                                class="w-full flex items-center gap-3 bg-indigo-50/60 rounded-xl p-3 font-semibold text-xs text-left"
+                                            >
+
+                                                <span class="text-emerald-700">
+                                                    ${I(q[0])}
+                                                </span>
+
+                                                <span class="flex-1">
+                                                    ${q[1]}
+                                                </span>
+
+                                                ${I('chevron_right')}
+
+                                            </button>
+                                        `
+                                    )
+                                    .join('')}
+
+                            </div>
+
+                        </section>
+
+                    </div>
+
+                </div>
+
+
+                <section class="${card} mt-5">
+
+                    <h2 class="font-bold text-base">
+                        Riwayat Aktivitas & Log Studio Terkini
+                    </h2>
+
+
+                    <div class="grid grid-cols-4 gap-3 mt-4 text-xs">
+
+                        ${DB.log
+                            .slice(0, 4)
+                            .map(
+                                l => `
+                                    <div class="border rounded-xl p-3 bg-slate-50/60">
+
+                                        <span class="text-[10px] font-bold bg-emerald-100 text-emerald-800 rounded px-1.5">
+                                            ${l.t}
+                                        </span>
+
+                                        <div class="font-bold mt-2">
+                                            ${l.m}
+                                        </div>
+
+                                        <div class="text-[10px] text-slate-400 mt-1">
+                                            ${l.s}
+                                        </div>
+
+                                    </div>
+                                `
+                            )
+                            .join('')}
+
+                    </div>
+
+                </section>
+                `;
+        }
+
+
+        $('out') && R();
+
+    </script>
+
+</body>
+
+</html>
